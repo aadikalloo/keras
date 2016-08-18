@@ -60,7 +60,7 @@ imgs = np.concatenate((img1[np.newaxis,...], img2[np.newaxis,...]), axis = 0)
 for i in range(3, len(onlyfiles)):
     img2 = misc.imread(mypath + fileinfo_df['filename'].iloc[i])
     imgs = np.concatenate((imgs, img2[np.newaxis,...]), axis = 0)
-
+np.save('D:\images.npy')
 
 # convert class vectors to binary class matrices
 #Y_train = np_utils.to_categorical(y_train, nb_classes)
