@@ -19,6 +19,10 @@ from keras.layers import Dense, Dropout, Activation, Flatten
 from keras.layers import Convolution2D, MaxPooling2D
 from keras.optimizers import SGD
 from keras.utils import np_utils
+import numpy as np
+import scipy
+from os import listdir
+from os.path import isfile, join
 
 batch_size = 32
 nb_classes = 10
@@ -30,11 +34,22 @@ img_rows, img_cols = 32, 32
 # the CIFAR10 images are RGB
 img_channels = 3
 
+imagePaths = [f for f in listdir(mypath) if isfile(join(mypath, f))]
+fileinfo_df = pd.DataFrame()
+for (i, imagePath) in enumerate(imagePaths):
+    fileinfo_df.loc[i, 1] = imagePath #filename
+    fileinfo_df.loc[i, 2] = imagePath.split(os.path.sep)[-1].split(".")[0] #class status from beginning of name
+    if fileinfo_df.loc[i, 2] == 'dermoscopy':
+        num_class = 1
+    else:
+        num_class = 0        
+    fileinfo_df.loc[i, 3] = num_class #numerical class value
+    fileinfo_df.loc[i, 4] = i #index
 # the data, shuffled and split between train and test sets
-(X_train, y_train), (X_test, y_test) = cifar10.load_data()
-print('X_train shape:', X_train.shape)
-print(X_train.shape[0], 'train samples')
-print(X_test.shape[0], 'test samples')
+#(X_train, y_train), (X_test, y_test) = cifar10.load_data()
+#print('X_train shape:', X_train.shape)
+#print(X_train.shape[0], 'train samples')
+#print(X_test.shape[0], 'test samples')
 
 # convert class vectors to binary class matrices
 Y_train = np_utils.to_categorical(y_train, nb_classes)
