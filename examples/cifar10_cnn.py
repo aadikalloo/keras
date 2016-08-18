@@ -36,24 +36,31 @@ img_rows, img_cols = 32, 32
 img_channels = 3
 
 imagePaths = [f for f in listdir(mypath) if isfile(join(mypath, f))]
-fileinfo_df = pd.DataFrame()
+#fileinfo_df = pd.DataFrame(columns = ['filename', 'class', 'numclass', 'index'], index=len(onlyfiles))
+fileinfo_df = pd.DataFrame(0, index=np.arange(len(onlyfiles)),columns = ['filename', 'class', 'numclass', 'index'])
+
 for (i, imagePath) in enumerate(imagePaths):
-    fileinfo_df.loc[i, 1] = imagePath #filename
-    fileinfo_df.loc[i, 2] = imagePath.split(os.path.sep)[-1].split(".")[0] #class status from beginning of name
-    if fileinfo_df.loc[i, 2] == 'dermoscopy':
+    fileinfo_df['filename'].iloc[i] = imagePath #filename
+    fileinfo_df['class'].iloc[2] = imagePath.split(os.path.sep)[-1].split(".")[0] #class status from beginning of name
+    if fileinfo_df['class'].iloc[2] == 'dermoscopy':
         num_class = 1
     else:
         num_class = 0        
-    fileinfo_df.loc[i, 3] = num_class #numerical class value
-    fileinfo_df.loc[i, 4] = i #index
+    fileinfo_df['numclass'].iloc[3] = num_class #numerical class value
+    fileinfo_df['index'].iloc[4] = i #index
 # the data, shuffled and split between train and test sets
 #(X_train, y_train), (X_test, y_test) = cifar10.load_data()
 #print('X_train shape:', X_train.shape)
 #print(X_train.shape[0], 'train samples')
 #print(X_test.shape[0], 'test samples')
 
-img1 = misc.imread(mypath + fileinfo_df.loc[1,1]
-img2 = misc.imread(mypath + fileinfo_df.loc[2,1]
+img1 = misc.imread(mypath + fileinfo_df.iloc[0,0]
+img2 = misc.imread(mypath + fileinfo_df.iloc[1,0]
+imgs = np.concatenate((img1[np.newaxis,...], img2[np.newaxis,...]), axis = 0)
+for i in range(3, len(onlyfiles)):
+    img2 = misc.imread(mypath + fileinfo_df['filename'].iloc[i])
+    imgs = np.concatenate((imgs, img2[np.newaxis,...]), axis = 0)
+
 
 # convert class vectors to binary class matrices
 #Y_train = np_utils.to_categorical(y_train, nb_classes)
@@ -89,10 +96,13 @@ model.compile(loss='categorical_crossentropy',
               optimizer=sgd,
               metrics=['accuracy'])
 
-X_train = X_train.astype('float32')
-X_test = X_test.astype('float32')
-X_train /= 255
-X_test /= 255
+#X_train = X_train.astype('float32')
+#X_test = X_test.astype('float32')
+#X_train /= 255
+#X_test /= 255
+imgs = imgs.astype('float32')
+imgs = imgs / 255
+
 
 if not data_augmentation:
     print('Not using data augmentation.')
