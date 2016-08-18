@@ -23,9 +23,10 @@ import numpy as np
 import scipy
 from os import listdir
 from os.path import isfile, join
+from scipy import misc
 
 batch_size = 32
-nb_classes = 10
+nb_classes = 2
 nb_epoch = 200
 data_augmentation = True
 
@@ -51,9 +52,12 @@ for (i, imagePath) in enumerate(imagePaths):
 #print(X_train.shape[0], 'train samples')
 #print(X_test.shape[0], 'test samples')
 
+img1 = misc.imread(mypath + fileinfo_df.loc[1,1]
+img2 = misc.imread(mypath + fileinfo_df.loc[2,1]
+
 # convert class vectors to binary class matrices
-Y_train = np_utils.to_categorical(y_train, nb_classes)
-Y_test = np_utils.to_categorical(y_test, nb_classes)
+#Y_train = np_utils.to_categorical(y_train, nb_classes)
+#Y_test = np_utils.to_categorical(y_test, nb_classes)
 
 model = Sequential()
 
