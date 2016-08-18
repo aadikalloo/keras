@@ -34,6 +34,8 @@ data_augmentation = True
 img_rows, img_cols = 32, 32
 # the CIFAR10 images are RGB
 img_channels = 3
+mypath = "D:\Konstantinos\AllImages_32\\"
+
 
 imagePaths = [f for f in listdir(mypath) if isfile(join(mypath, f))]
 #fileinfo_df = pd.DataFrame(columns = ['filename', 'class', 'numclass', 'index'], index=len(onlyfiles))
